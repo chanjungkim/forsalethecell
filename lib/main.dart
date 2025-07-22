@@ -33,18 +33,18 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   }
 
   void _onDetect(BarcodeCapture capture) async {
-    final barcode = capture.barcodes.first.rawValue;
-    if (barcode == null || isPlaying || isCooldown) return;
+    if (isPlaying || isCooldown) return;
 
-    final path = 'assets/audio/$barcode.mp3';
+    final barcode = capture.barcodes.first.rawValue;
+    if (barcode == null) return;
+
+    setState(() {
+      scannedCode = barcode;
+      isPlaying = true;
+      isCooldown = true;
+    });
 
     try {
-      setState(() {
-        scannedCode = barcode;
-        isPlaying = true;
-        isCooldown = true;
-      });
-
       // 플래시 깜빡이기
       await controller.toggleTorch();
       await Future.delayed(Duration(milliseconds: 100));
@@ -77,8 +77,8 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
           break;
         default:
           await player.play(AssetSource('audio/111113.mp3'));
-        // 기본 처리
       }
+
       player.onPlayerComplete.listen((event) {
         setState(() => isPlaying = false);
       });
@@ -86,6 +86,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
       // 3초 쿨타임 설정
       await Future.delayed(Duration(seconds: 3));
       setState(() => isCooldown = false);
+
     } catch (e) {
       print('🔴 에러: \$e');
       setState(() {
@@ -123,8 +124,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                   color: Colors.black.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text(
-                  '$scannedCode',
+                child: Text('$scannedCode',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),

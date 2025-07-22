@@ -7,37 +7,37 @@
 7    <uses-sdk
 8        android:minSdkVersion="21"
 9        android:targetSdkVersion="35" />
-10    <!--
-11         Required to query activities that can process text, see:
-12         https://developer.android.com/training/package-visibility and
-13         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
-14
-15         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
-16    -->
-17    <queries>
-17-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:39:5-44:15
-18        <intent>
-18-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:40:9-43:18
-19            <action android:name="android.intent.action.PROCESS_TEXT" />
-19-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:41:13-72
-19-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:41:21-70
+10
+11    <uses-permission android:name="android.permission.CAMERA" />
+11-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:2:5-65
+11-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:2:22-62
+12
+13    <uses-feature
+13-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:3:5-84
+14        android:name="android.hardware.camera"
+14-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:3:19-57
+15        android:required="true" />
+15-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:3:58-81
+16    <!--
+17         Required to query activities that can process text, see:
+18         https://developer.android.com/training/package-visibility and
+19         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
 20
-21            <data android:mimeType="text/plain" />
-21-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:42:13-50
-21-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:42:19-48
-22        </intent>
-23    </queries>
-24
-25    <uses-permission android:name="android.permission.CAMERA" />
-25-->[:mobile_scanner] /Users/evan/StudioProjects/forsalethecell/build/mobile_scanner/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:7:5-65
-25-->[:mobile_scanner] /Users/evan/StudioProjects/forsalethecell/build/mobile_scanner/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:7:22-62
+21         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
+22    -->
+23    <queries>
+23-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:42:5-47:15
+24        <intent>
+24-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:43:9-46:18
+25            <action android:name="android.intent.action.PROCESS_TEXT" />
+25-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:44:13-72
+25-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:44:21-70
 26
-27    <uses-feature
-27-->[:mobile_scanner] /Users/evan/StudioProjects/forsalethecell/build/mobile_scanner/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:9:5-11:36
-28        android:name="android.hardware.camera"
-28-->[:mobile_scanner] /Users/evan/StudioProjects/forsalethecell/build/mobile_scanner/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:10:9-47
-29        android:required="false" />
-29-->[:mobile_scanner] /Users/evan/StudioProjects/forsalethecell/build/mobile_scanner/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:11:9-33
+27            <data android:mimeType="text/plain" />
+27-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:45:13-50
+27-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:45:19-48
+28        </intent>
+29    </queries>
 30
 31    <permission
 31-->[androidx.core:core:1.13.1] /Users/evan/.gradle/caches/8.10.2/transforms/8cf478dec41eed746328fa8046755ba2/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
@@ -59,32 +59,32 @@
 39
 40    <application
 41        android:name="android.app.Application"
-41-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:4:9-42
+41-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:7:9-42
 42        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 42-->[androidx.core:core:1.13.1] /Users/evan/.gradle/caches/8.10.2/transforms/8cf478dec41eed746328fa8046755ba2/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
 43        android:extractNativeLibs="true"
 44        android:icon="@mipmap/ic_launcher"
-44-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:5:9-43
+44-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:8:9-43
 45        android:label="forsalethecell" >
-45-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:3:9-39
+45-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:6:9-39
 46        <activity
-46-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:6:9-27:20
+46-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:9:9-30:20
 47            android:name="org.koreanlab.forsalethecell.forsalethecell.MainActivity"
-47-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:7:13-41
+47-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:10:13-41
 48            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-48-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:12:13-163
+48-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:15:13-163
 49            android:exported="true"
-49-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:8:13-36
+49-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:11:13-36
 50            android:hardwareAccelerated="true"
-50-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:13:13-47
+50-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:16:13-47
 51            android:launchMode="singleTop"
-51-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:9:13-43
+51-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:12:13-43
 52            android:taskAffinity=""
-52-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:10:13-36
+52-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:13:13-36
 53            android:theme="@style/LaunchTheme"
-53-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:11:13-47
+53-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:14:13-47
 54            android:windowSoftInputMode="adjustResize" >
-54-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:14:13-55
+54-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:17:13-55
 55
 56            <!--
 57                 Specifies an Android theme to apply to this Activity as soon as
@@ -93,21 +93,21 @@
 60                 to determine the Window background behind the Flutter UI.
 61            -->
 62            <meta-data
-62-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:19:13-22:17
+62-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:22:13-25:17
 63                android:name="io.flutter.embedding.android.NormalTheme"
-63-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:20:15-70
+63-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:23:15-70
 64                android:resource="@style/NormalTheme" />
-64-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:21:15-52
+64-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:24:15-52
 65
 66            <intent-filter>
-66-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:23:13-26:29
+66-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:26:13-29:29
 67                <action android:name="android.intent.action.MAIN" />
-67-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:24:17-68
-67-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:24:25-66
+67-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:27:17-68
+67-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:27:25-66
 68
 69                <category android:name="android.intent.category.LAUNCHER" />
-69-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:25:17-76
-69-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:25:27-74
+69-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:28:17-76
+69-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:28:27-74
 70            </intent-filter>
 71        </activity>
 72        <!--
@@ -115,11 +115,11 @@
 74             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
 75        -->
 76        <meta-data
-76-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:30:9-32:33
+76-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:33:9-35:33
 77            android:name="flutterEmbedding"
-77-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:31:13-44
+77-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:34:13-44
 78            android:value="2" />
-78-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:32:13-30
+78-->/Users/evan/StudioProjects/forsalethecell/android/app/src/main/AndroidManifest.xml:35:13-30
 79        <!--
 80        Service for holding metadata. Cannot be instantiated.
 81        Metadata will be merged from other manifests.
