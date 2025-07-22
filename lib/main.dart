@@ -19,7 +19,7 @@ class BarcodeScannerPage extends StatefulWidget {
 class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   final player = AudioPlayer();
   final MobileScannerController controller = MobileScannerController(
-    facing: CameraFacing.back,
+    facing: CameraFacing.front,
     torchEnabled: false,
     detectionSpeed: DetectionSpeed.normal,
     returnImage: true,
