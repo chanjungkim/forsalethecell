@@ -18,7 +18,14 @@ class BarcodeScannerPage extends StatefulWidget {
 
 class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   final player = AudioPlayer();
-  final MobileScannerController controller = MobileScannerController();
+  final MobileScannerController controller = MobileScannerController(
+    facing: CameraFacing.back,
+    torchEnabled: false,
+    detectionSpeed: DetectionSpeed.normal,
+    returnImage: true,
+    formats: [BarcodeFormat.all],
+  );
+
   bool isPlaying = false;
   bool isCooldown = false;
   String? scannedCode;
@@ -26,10 +33,27 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   @override
   void initState() {
     super.initState();
-    // 화면 항상 켜짐
     WakelockPlus.enable();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+
+    player.setAudioContext(AudioContext(
+      android: AudioContextAndroid(
+        isSpeakerphoneOn: false,
+        stayAwake: false,
+        contentType: AndroidContentType.music,
+        usageType: AndroidUsageType.media,
+        audioFocus: AndroidAudioFocus.gain,
+      ),
+      iOS: AudioContextIOS(
+        category: AVAudioSessionCategory.playback,
+        options: [AVAudioSessionOptions.defaultToSpeaker],
+      ),
+    ));
+
+    player.onPlayerComplete.listen((event) {
+      setState(() => isPlaying = false);
+    });
   }
 
   void _onDetect(BarcodeCapture capture) async {
@@ -45,55 +69,40 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
     });
 
     try {
-      // 플래시 깜빡이기
-      await controller.toggleTorch();
-      await Future.delayed(Duration(milliseconds: 100));
-      await controller.toggleTorch();
+      await player.stop();
 
-      switch (barcode) {
-        case '8809092578891':
-          await player.play(AssetSource('audio/morse_dash.wav'));
-          break;
-        case '599529575403':
-          await player.play(AssetSource('audio/morse_dot.wav'));
-          break;
-        case '8809599361279':
-          await player.play(AssetSource('audio/111111.mp3'));
-          break;
-        case '8801114163405':
-          await player.play(AssetSource('audio/111112.mp3'));
-          break;
-        case '599519575403':
-          await player.play(AssetSource('audio/111113.mp3'));
-          break;
-        case '8809189925317':
-          await player.play(AssetSource('audio/111114.mp3'));
-          break;
-        case '8801068931396':
-          await player.play(AssetSource('audio/111115.mp3'));
-          break;
-        case '2000000913414':
-          await player.play(AssetSource('audio/111116.mp3'));
-          break;
-        default:
-          await player.play(AssetSource('audio/111113.mp3'));
+      final path = _audioPath(barcode);
+      if (path != null) {
+        await flash();
+        await player.play(AssetSource(path));
+        await delay();
+      } else {
+        setState(() {
+          isPlaying = false;
+          isCooldown = false;
+        });
       }
-
-      player.onPlayerComplete.listen((event) {
-        setState(() => isPlaying = false);
-      });
-
-      // 3초 쿨타임 설정
-      await Future.delayed(Duration(seconds: 3));
-      setState(() => isCooldown = false);
-
     } catch (e) {
-      print('🔴 에러: \$e');
+      print('🔴 에러: $e');
       setState(() {
         isPlaying = false;
         isCooldown = false;
       });
     }
+  }
+
+  String? _audioPath(String barcode) {
+    const map = {
+      '8809092578891': 'audio/morse_dash.wav',
+      '599529575403': 'audio/morse_dot.wav',
+      '8809599361279': 'audio/111111.mp3',
+      '8801114163405': 'audio/111112.mp3',
+      '599519575403': 'audio/111113.mp3',
+      '8809189925317': 'audio/111114.mp3',
+      '8801068931396': 'audio/111115.mp3',
+      '2000000913414': 'audio/111116.mp3',
+    };
+    return map[barcode];
   }
 
   @override
@@ -124,7 +133,8 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                   color: Colors.black.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text('$scannedCode',
+                child: Text(
+                  '$scannedCode',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
@@ -133,4 +143,15 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
       ],
     ),
   );
+
+  flash() async {
+    await controller.toggleTorch();
+    await Future.delayed(Duration(milliseconds: 100));
+    await controller.toggleTorch();
+  }
+
+  delay() async {
+    await Future.delayed(Duration(seconds: 3));
+    setState(() => isCooldown = false);
+  }
 }
