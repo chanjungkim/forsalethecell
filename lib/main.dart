@@ -17,10 +17,10 @@ class BarcodeScannerPage extends StatefulWidget {
   _BarcodeScannerPageState createState() => _BarcodeScannerPageState();
 }
 
-class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
+class _BarcodeScannerPageState extends State<BarcodeScannerPage> with SingleTickerProviderStateMixin {
   final player = AudioPlayer();
   final MobileScannerController controller = MobileScannerController(
-    facing: CameraFacing.front,
+    facing: CameraFacing.back,
     torchEnabled: false,
     detectionSpeed: DetectionSpeed.normal,
     returnImage: true,
@@ -30,6 +30,11 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   bool isPlaying = false;
   bool isCooldown = false;
   String? scannedCode;
+  late AnimationController _laserController;
+  late Animation<double> _laserPosition;
+
+  int tapCount = 0;
+  DateTime? firstTapTime;
 
   @override
   void initState() {
@@ -57,6 +62,22 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    _laserController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    )..repeat();
+
+    _laserPosition = Tween<double>(begin: 0, end: screenHeight).animate(
+      CurvedAnimation(parent: _laserController, curve: Curves.linear),
+    );
+  }
+
   void _onDetect(BarcodeCapture capture) async {
     if (isPlaying || isCooldown) return;
 
@@ -77,21 +98,19 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
 
       final path = _audioPath(finalCode);
       if (path != null) {
-        if (path != null) {
-          await flash();
+        await flash();
 
-          // ✅ 먼저 morse_dash.wav 재생
-          await player.play(AssetSource('audio/morse_dash.wav'));
+        // ✅ 먼저 morse_dash.wav 재생
+        await player.play(AssetSource('audio/morse_dash.wav'));
+        await player.onPlayerComplete.first;
+
+        // ✅ 중복 방지 조건 추가
+        if (path != 'audio/morse_dash.wav') {
+          await player.play(AssetSource(path));
           await player.onPlayerComplete.first;
-
-          // ✅ 중복 방지 조건 추가
-          if (path != 'audio/morse_dash.wav') {
-            await player.play(AssetSource(path));
-            await player.onPlayerComplete.first;
-          }
-
-          await delay();
         }
+
+        await delay();
       } else {
         setState(() {
           isPlaying = false;
@@ -120,16 +139,33 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
 
   String? _audioPath(String barcode) {
     const map = {
-      '8809092578891': 'audio/morse_dash.wav',
-      '5995295754033': 'audio/morse_dot.wav',
-      '8809599361279': 'audio/111111.mp3',
-      '8801114163405': 'audio/111112.mp3',
-      '599519575403': 'audio/111113.mp3',
-      '8809189925317': 'audio/111114.mp3',
-      '8801068931396': 'audio/111115.mp3',
-      '2000000913414': 'audio/111116.mp3',
+      '8809092578891': 'audio/1.wav',
+      '8809524905714': 'audio/2.wav',
+      '8809189925317': 'audio/3.wav',
+      '8801068931396': 'audio/4.wav',
+      '8809599361279': 'audio/5.wav',
+      '8801114163405': 'audio/6.wav',
+      '5995295754033': 'audio/morse_dash.wav',
+      '599519575403': 'audio/morse_dash.wav',
+      '2000000913414': 'audio/morse_dash.wav',
+      'http://m.site.naver.com/0EvG1': 'audio/morse_dash.wav',
     };
     return map[barcode];
+  }
+
+  void _handleTap() {
+    final now = DateTime.now();
+    if (firstTapTime == null || now.difference(firstTapTime!) > Duration(seconds: 5)) {
+      firstTapTime = now;
+      tapCount = 1;
+    } else {
+      tapCount++;
+      if (tapCount >= 10) {
+        controller.switchCamera();
+        tapCount = 0;
+        firstTapTime = null;
+      }
+    }
   }
 
   @override
@@ -137,47 +173,58 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
     player.dispose();
     controller.dispose();
     WakelockPlus.disable();
+    _laserController.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: Stack(
-      children: [
-        MobileScanner(
-          controller: controller,
-          onDetect: _onDetect,
-        ),
-        if (scannedCode != null)
-          Positioned(
-            bottom: 40,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  '$scannedCode',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: _handleTap,
+    child: Scaffold(
+      body: Stack(
+        children: [
+          MobileScanner(
+            controller: controller,
+            onDetect: _onDetect,
+          ),
+          AnimatedBuilder(
+            animation: _laserPosition,
+            builder: (_, __) => Positioned(
+              top: _laserPosition.value,
+              left: 0,
+              right: 0,
+              child: Container(height: 20, color: Colors.redAccent),
+            ),
+          ),
+          if (scannedCode != null)
+            Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    '$scannedCode',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
                 ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     ),
   );
 
   flash() async {
     try {
-      if (await TorchLight.isTorchAvailable()) {
-        await TorchLight.enableTorch();
-        await Future.delayed(Duration(milliseconds: 100));
-        await TorchLight.disableTorch();
-      }
+      await TorchLight.enableTorch();
+      await Future.delayed(Duration(milliseconds: 100));
+      await TorchLight.disableTorch();
     } catch (e) {
       print('🔦 플래시 오류: $e');
     }
