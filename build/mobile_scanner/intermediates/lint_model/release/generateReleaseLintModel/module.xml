@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="/Users/evan/.pub-cache/hosted/pub.dev/mobile_scanner-3.5.7/android"
+    name=":mobile_scanner"
+    type="LIBRARY"
+    maven="dev.steenbakker.mobile_scanner:mobile_scanner:1.0-SNAPSHOT"
+    agpVersion="8.7.0"
+    buildFolder="/Users/evan/StudioProjects/forsalethecell/build/mobile_scanner"
+    bootClassPath="/Users/evan/Library/Android/sdk/platforms/android-33/android.jar:/Users/evan/Library/Android/sdk/build-tools/34.0.0/core-lambda-stubs.jar"
+    javaSourceLevel="1.8"
+    compileTarget="android-33"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>
