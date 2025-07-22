@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:torch_light/torch_light.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,7 +24,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
     torchEnabled: false,
     detectionSpeed: DetectionSpeed.normal,
     returnImage: true,
-    formats: [BarcodeFormat.all],
+    formats: [BarcodeFormat.code128, BarcodeFormat.ean13, BarcodeFormat.qrCode, BarcodeFormat.upcA],
   );
 
   bool isPlaying = false;
@@ -62,8 +63,11 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
     final barcode = capture.barcodes.first.rawValue;
     if (barcode == null) return;
 
+    // EAN-13 체크섬 자동 추가
+    String finalCode = barcode.length == 12 ? _appendEAN13Checksum(barcode) : barcode;
+
     setState(() {
-      scannedCode = barcode;
+      scannedCode = finalCode;
       isPlaying = true;
       isCooldown = true;
     });
@@ -71,7 +75,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
     try {
       await player.stop();
 
-      final path = _audioPath(barcode);
+      final path = _audioPath(finalCode);
       if (path != null) {
         await flash();
         await player.play(AssetSource(path));
@@ -91,10 +95,21 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
     }
   }
 
+  String _appendEAN13Checksum(String code) {
+    if (code.length != 12) return code;
+    int sum = 0;
+    for (int i = 0; i < 12; i++) {
+      int digit = int.parse(code[i]);
+      sum += i % 2 == 0 ? digit : digit * 3;
+    }
+    int checksum = (10 - (sum % 10)) % 10;
+    return '$code$checksum';
+  }
+
   String? _audioPath(String barcode) {
     const map = {
       '8809092578891': 'audio/morse_dash.wav',
-      '599529575403': 'audio/morse_dot.wav',
+      '5995295754033': 'audio/morse_dot.wav',
       '8809599361279': 'audio/111111.mp3',
       '8801114163405': 'audio/111112.mp3',
       '599519575403': 'audio/111113.mp3',
@@ -145,9 +160,15 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   );
 
   flash() async {
-    await controller.toggleTorch();
-    await Future.delayed(Duration(milliseconds: 100));
-    await controller.toggleTorch();
+    try {
+      if (await TorchLight.isTorchAvailable()) {
+        await TorchLight.enableTorch();
+        await Future.delayed(Duration(milliseconds: 100));
+        await TorchLight.disableTorch();
+      }
+    } catch (e) {
+      print('🔦 플래시 오류: $e');
+    }
   }
 
   delay() async {

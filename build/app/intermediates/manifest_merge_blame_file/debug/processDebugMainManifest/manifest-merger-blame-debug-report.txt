@@ -5,7 +5,7 @@
 5    android:versionName="1.0.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="21"
+8        android:minSdkVersion="23"
 9        android:targetSdkVersion="35" />
 10    <!--
 11         The INTERNET permission is required for development. Specifically,
@@ -66,7 +66,7 @@
 46        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 46-->[androidx.core:core:1.13.1] /Users/evan/.gradle/caches/8.10.2/transforms/8cf478dec41eed746328fa8046755ba2/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
 47        android:debuggable="true"
-48        android:extractNativeLibs="true"
+48        android:extractNativeLibs="false"
 49        android:icon="@mipmap/ic_launcher"
 50        android:label="forsalethecell" >
 51        <activity

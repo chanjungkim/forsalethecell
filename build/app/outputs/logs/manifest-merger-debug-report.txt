@@ -48,6 +48,7 @@ MERGED from /Users/evan/StudioProjects/forsalethecell/android/app/src/main/Andro
 INJECTED from /Users/evan/StudioProjects/forsalethecell/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /Users/evan/StudioProjects/forsalethecell/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /Users/evan/StudioProjects/forsalethecell/android/app/src/debug/AndroidManifest.xml:1:1-7:12
+MERGED from [:torch_light] /Users/evan/StudioProjects/forsalethecell/build/torch_light/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [:audioplayers_android] /Users/evan/StudioProjects/forsalethecell/build/audioplayers_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [:mobile_scanner] /Users/evan/StudioProjects/forsalethecell/build/mobile_scanner/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-13:12
 MERGED from [:wakelock_plus] /Users/evan/StudioProjects/forsalethecell/build/wakelock_plus/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
@@ -142,6 +143,8 @@ uses-sdk
 INJECTED from /Users/evan/StudioProjects/forsalethecell/android/app/src/debug/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/evan/StudioProjects/forsalethecell/android/app/src/debug/AndroidManifest.xml
 INJECTED from /Users/evan/StudioProjects/forsalethecell/android/app/src/debug/AndroidManifest.xml
+MERGED from [:torch_light] /Users/evan/StudioProjects/forsalethecell/build/torch_light/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:torch_light] /Users/evan/StudioProjects/forsalethecell/build/torch_light/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:audioplayers_android] /Users/evan/StudioProjects/forsalethecell/build/audioplayers_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:audioplayers_android] /Users/evan/StudioProjects/forsalethecell/build/audioplayers_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:mobile_scanner] /Users/evan/StudioProjects/forsalethecell/build/mobile_scanner/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
