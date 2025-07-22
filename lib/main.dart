@@ -77,9 +77,21 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
 
       final path = _audioPath(finalCode);
       if (path != null) {
-        await flash();
-        await player.play(AssetSource(path));
-        await delay();
+        if (path != null) {
+          await flash();
+
+          // ✅ 먼저 morse_dash.wav 재생
+          await player.play(AssetSource('audio/morse_dash.wav'));
+          await player.onPlayerComplete.first;
+
+          // ✅ 중복 방지 조건 추가
+          if (path != 'audio/morse_dash.wav') {
+            await player.play(AssetSource(path));
+            await player.onPlayerComplete.first;
+          }
+
+          await delay();
+        }
       } else {
         setState(() {
           isPlaying = false;
